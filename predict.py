@@ -1,6 +1,7 @@
 import pandas as pd
 import yfinance as yf
-
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 # Download stock data
 df = yf.download('AAPL', start='2020-01-01', end='2024-01-01')
 
@@ -38,5 +39,20 @@ y_train, y_test = y[:split], y[split:]
 
 print(f"Training rows: {len(X_train)}")
 print(f"Test rows: {len(X_test)}")
+
+# Create model and train on train dataset
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+print("Model trained!")
+
+# Shows training accuracy
+train_pred = model.predict(X_train)
+train_acc = accuracy_score(y_train, train_pred)
+print(f"Training Accuracy: {train_acc * 100:.2f}%")
+
+# Shows test accuracy
+test_pred = model.predict(X_test)
+test_acc = accuracy_score(y_test, test_pred)
+print(f"Test Accuracy: {test_acc * 100:.2f}%")
 
 #print(df[['Close', 'volume_change', 'price_change', 'target']].head(25))
