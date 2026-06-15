@@ -17,6 +17,7 @@ df['20_day_avg'] = df['Close'].rolling(20).mean()
 df['volume_change'] = df['Volume'].pct_change()
 df['price_change'] = df['Close'].pct_change()
 
+# Target
+df['target'] = (df['Close'].shift(-1) > df['Close']).astype(int)
 
-
-print(df[['Close', 'volume_change', 'price_change']].head(25))
+print(df[['Close', 'volume_change', 'price_change', 'target']].head(25))
