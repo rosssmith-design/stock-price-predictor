@@ -27,13 +27,27 @@ df['daily_range'] = df['High'] - df['Low']
 # Price position
 df['price_position'] = (df['Close'] - df['Low']) / (df['High'] - df['Low'])
 
+# Calculate RSI
+def calculate_rsi(prices):
+    delta = prices.diff()
+    gain = delta.clip(lower=0)
+    loss = -delta.clip(upper=0)
+    avg_gain = gain.rolling(14).mean()
+    avg_loss = loss.rolling(14).mean()
+    rs = avg_gain / avg_loss
+    rsi = 100 - (100 / (1 + rs))
+    return rsi
+
+df['rsi'] = calculate_rsi(df['Close'])
+
 
 # Drop NaN rows
 df = df.dropna()
 
  # Features and target
 features = ['yesterday', '2_days_ago', '3_days_ago',
-             '5_day_avg', '20_day_avg', 'volume_change', 'price_change', 'daily_range', 'price_position']
+             '5_day_avg', '20_day_avg', 'volume_change',
+               'price_change', 'daily_range', 'price_position', 'rsi']
 
 X = df[features]
 y = df['target']
@@ -48,7 +62,7 @@ print(f"Training rows: {len(X_train)}")
 print(f"Test rows: {len(X_test)}")
 
 # Create model and train on train dataset
-model = RandomForestClassifier(n_estimators=200, max_depth=4, random_state=42)
+model = RandomForestClassifier(n_estimators=100, max_depth=3, random_state=42)
 model.fit(X_train, y_train)
 print("Model trained!")
 
