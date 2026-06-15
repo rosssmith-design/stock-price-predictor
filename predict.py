@@ -21,12 +21,15 @@ df['price_change'] = df['Close'].pct_change()
 # Target
 df['target'] = (df['Close'].shift(-1) > df['Close']).astype(int)
 
+# Daily range
+df['daily_range'] = df['High'] - df['Low']
+
 # Drop NaN rows
 df = df.dropna()
 
  # Features and target
 features = ['yesterday', '2_days_ago', '3_days_ago',
-             '5_day_avg', '20_day_avg', 'volume_change', 'price_change']
+             '5_day_avg', '20_day_avg', 'volume_change', 'price_change', 'daily_range']
 
 X = df[features]
 y = df['target']
