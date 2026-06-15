@@ -3,7 +3,7 @@ import yfinance as yf
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 # Download stock data
-df = yf.download('GME', start='2020-01-01', end='2024-01-01')
+df = yf.download('AMD', start='2020-01-01', end='2024-01-01')
 
 # Create lag features
 df['yesterday'] = df['Close'].shift(1)
@@ -40,6 +40,9 @@ def calculate_rsi(prices):
 
 df['rsi'] = calculate_rsi(df['Close'])
 
+# MACD
+df['macd'] = df['Close'].rolling(12).mean() - df['Close'].rolling(26).mean()
+
 
 # Drop NaN rows
 df = df.dropna()
@@ -47,7 +50,7 @@ df = df.dropna()
  # Features and target
 features = ['yesterday', '2_days_ago', '3_days_ago',
              '5_day_avg', '20_day_avg', 'volume_change',
-               'price_change', 'daily_range', 'price_position', 'rsi']
+               'price_change', 'daily_range', 'price_position', 'rsi', 'macd']
 
 X = df[features]
 y = df['target']
