@@ -47,7 +47,7 @@ print(f"Training rows: {len(X_train)}")
 print(f"Test rows: {len(X_test)}")
 
 # Create model and train on train dataset
-model = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=42)
+model = RandomForestClassifier(n_estimators=200, max_depth=4, random_state=42)
 model.fit(X_train, y_train)
 print("Model trained!")
 
