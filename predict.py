@@ -3,7 +3,7 @@ import yfinance as yf
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 # Download stock data
-df = yf.download('AAPL', start='2020-01-01', end='2024-01-01')
+df = yf.download('GME', start='2020-01-01', end='2024-01-01')
 
 # Create lag features
 df['yesterday'] = df['Close'].shift(1)
@@ -26,6 +26,7 @@ df['daily_range'] = df['High'] - df['Low']
 
 # Price position
 df['price_position'] = (df['Close'] - df['Low']) / (df['High'] - df['Low'])
+
 
 # Drop NaN rows
 df = df.dropna()
