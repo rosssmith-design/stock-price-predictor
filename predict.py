@@ -22,6 +22,21 @@ df['target'] = (df['Close'].shift(-1) > df['Close']).astype(int)
 
 # Drop NaN rows
 df = df.dropna()
-print(len(df))
 
-print(df[['Close', 'volume_change', 'price_change', 'target']].head(25))
+ # Features and target
+features = ['yesterday', '2_days_ago', '3_days_ago',
+             '5_day_avg', '20_day_avg', 'volume_change', 'price_change']
+
+X = df[features]
+y = df['target']
+
+# Split by time - 80:20
+split = int(len(df) * 0.8)
+
+X_train, X_test = X[:split], X[split:]
+y_train, y_test = y[:split], y[split:]
+
+print(f"Training rows: {len(X_train)}")
+print(f"Test rows: {len(X_test)}")
+
+#print(df[['Close', 'volume_change', 'price_change', 'target']].head(25))
