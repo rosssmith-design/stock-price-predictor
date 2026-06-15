@@ -20,4 +20,8 @@ df['price_change'] = df['Close'].pct_change()
 # Target
 df['target'] = (df['Close'].shift(-1) > df['Close']).astype(int)
 
+# Drop NaN rows
+df = df.dropna()
+print(len(df))
+
 print(df[['Close', 'volume_change', 'price_change', 'target']].head(25))
